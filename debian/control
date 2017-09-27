@@ -1,0 +1,13 @@
+Source: packet-tracer-installer
+Section: admin
+Priority: optional
+Maintainer: Luis Antonio Garcia Gisbert <luisgg@gmail.com>
+Build-Depends: debhelper (>= 7.0)
+Standards-Version: 3.8.4
+
+Package: packet-tracer-installer
+Architecture: all
+Depends: ${misc:Depends}, libqt5multimedia5, libqt5script5, libqt5scripttools5
+Description: packet tracer installer helper
+ This package installs dependencies to facilitate
+ packet tracer installation

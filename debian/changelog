@@ -1,0 +1,5 @@
+packet-tracer-installer (7.0) xenial; urgency=medium
+
+  * Initial release.
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Wed, 27 Sep 2017 08:19:09 +0200
