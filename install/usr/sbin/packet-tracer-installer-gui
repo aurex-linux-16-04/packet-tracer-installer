@@ -32,6 +32,12 @@ die(){
 	exit 1
 }
 
+progress(){
+	zenity --no-cancel --auto-close --progress --pulsate --text="$1"
+}
+
+
+
 end_message(){
 	zenity --info --title="Instalación de Packet Tracer" --text="Instalación finalizada con éxito\nPor favor cierre e inicie de nuevo la sesión para ejecutar Packet Tracer" 2>/dev/null
 	remove_garbage
@@ -45,6 +51,7 @@ untar(){
 	if [ $rc -eq 0 ] && [ -r "$DIR/install" ] && [ -r "$DIR/eula.txt" ] ; then
 		return 0
 	fi
+	rc=1
 	return 1
 }
 
@@ -81,9 +88,11 @@ do_start || die "Cancelado por el usuario"
 TARBALL="$(select_file)"
 [ "$TARBALL" ] || die "No se ha seleccionado un fichero válido"
 TMPDIR="$(mktemp -d)"
-untar "$TARBALL" "$TMPDIR" || die "Error descomprimiendo el fichero"
+untar "$TARBALL" "$TMPDIR" |progress "Descomprimiendo ..."
+[ $rc -eq 0 ] || die "Error descomprimiendo el fichero"
 show_eula "$TMPDIR/eula.txt" || die "Cancelado por el usuario"
-run_wrapper "$TMPDIR/install" || die "Error en la instalación"
+run_wrapper "$TMPDIR/install" |progress "Instalando ..."
+[ $rc -eq 0 ] || die "Error en la instalación"
 end_message
 exit 0
 
