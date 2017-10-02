@@ -33,7 +33,7 @@ die(){
 }
 
 end_message(){
-	zenity --info --title="Instalación de Packet Tracer" --text="Instalación finalizada con éxito" 2>/dev/null
+	zenity --info --title="Instalación de Packet Tracer" --text="Instalación finalizada con éxito\nPor favor cierre e inicie de nuevo la sesión para ejecutar Packet Tracer" 2>/dev/null
 	remove_garbage
 }
 

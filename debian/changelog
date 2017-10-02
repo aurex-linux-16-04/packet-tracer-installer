@@ -1,3 +1,9 @@
+packet-tracer-installer (7.0+aurex3) xenial; urgency=medium
+
+  * minor fixes
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 03 Oct 2017 01:20:41 +0200
+
 packet-tracer-installer (7.0+aurex2) xenial; urgency=medium
 
   * Fixed some paths
