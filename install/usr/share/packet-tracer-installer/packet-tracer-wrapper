@@ -1,0 +1,45 @@
+#!/bin/bash
+# -------
+# File:        packet-tracer-wrapper
+# Description: redefine bash builtin read to "automagically" avoid "preloaded" answers
+# Author:      Luis Antonio Garcia Gisbert <luisgg@gmail.com> 
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along 
+# with this program; if not, write to the Free Software Foundation, Inc., 
+# 51 Franklin St, Fifth Floor, Boston MA 02110-1301 USA
+# --------
+
+read(){
+	local _READ_VARIABLE_NAME_LOCAL_VAR="" _READ_VARIABLE_VALUE_LOCAL_VAR="" _READ_LOCAL_RETURN=0
+	if [ $# -gt 0 ]; then
+		_READ_VARIABLE_NAME_LOCAL_VAR="${@:$#:1}"
+		_READ_VARIABLE_VALUE_LOCAL_VAR="$(eval "echo $(eval "echo -n '$';echo -n $_READ_VARIABLE_NAME_LOCAL_VAR")")"
+	fi
+	if [ "$_READ_VARIABLE_VALUE_LOCAL_VAR" ] ; then
+		echo "$_READ_VARIABLE_VALUE_LOCAL_VAR"
+	else
+		builtin read "$@" || _READ_LOCAL_RETURN=$?
+	fi
+	return $_READ_LOCAL_RETURN
+}
+
+# main
+# preload (may be pressed ??) variables
+export input="y" NEEDREPLACE="y" QSD="y" QC="y" IDIR="/opt/pt"
+
+if [ "$1" ] && [ -x "$1" ] ; then
+	. "$1" 
+else
+	exit 1
+fi
+

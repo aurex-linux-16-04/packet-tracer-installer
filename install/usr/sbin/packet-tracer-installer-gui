@@ -1,0 +1,89 @@
+#!/bin/sh
+# -------
+# File:        packet-tracer-installer-gui
+# Description: simple packet tracer installation assistant
+#              using zenity
+# Author:      Luis Antonio Garcia Gisbert <luisgg@gmail.com> 
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along 
+# with this program; if not, write to the Free Software Foundation, Inc., 
+# 51 Franklin St, Fifth Floor, Boston MA 02110-1301 USA
+# --------
+
+remove_garbage(){
+	if [ "$TMPDIR" ] && [ -d "$TMPDIR" ] ; then
+		rm -fr "$TMPDIR"
+	fi
+}
+
+die(){
+	zenity --title "Error"  --error --text="$1"
+	remove_garbage
+	exit 1
+}
+
+end_message(){
+	zenity --info --title="Instalación de Packet Tracer" --text="Instalación finalizada con éxito" 2>/dev/null
+	remove_garbage
+}
+
+untar(){
+	FILE="$1"
+	DIR="$2"
+	rc=0
+	tar -C "$DIR" -xzf "$FILE" || rc=$?
+	if [ $rc -eq 0 ] && [ -r "$DIR/install" ] && [ -r "$DIR/eula.txt" ] ; then
+		return 0
+	fi
+	return 1
+}
+
+select_file(){
+	rc=0
+	f="$(zenity --title="Seleccione el fichero comprimido de Packet Tracer" --file-selection --file-filter='Packet Tracer tarball (tar.gz,tgz) | *.tar.gz *.tgz' 2>/dev/null)" || rc=$?
+	if [ $rc -eq 0 ] && [ -r "$f" ] && file "$f" |grep -q "gzip" ; then
+		echo "$f"
+	fi
+}
+
+do_start(){
+	zenity --question --title="Instalación de Packet Tracer" --text "Este programa necesita que usted haya descargado previamente\nel fichero comprimido de Packet Tracer utilizando una cuenta válida.\n\nA continuación se le pedirá que sellecione la ruta completa del fichero descargado.\n\n¿Está seguro de querer continuar?" 2>/dev/null || return 1
+	return 0
+}
+
+show_eula(){
+	zenity --width=700 --height=600 --title="Cisco Packet Tracer Software License Agreement" --text-info --filename="$1" 2>/dev/null || return 1
+	return 0
+}
+
+run_wrapper(){
+	rc=0
+	DIR="$1"
+	/usr/share/packet-tracer-installer/packet-tracer-wrapper "$DIR" || rc=$?
+	return $rc
+}
+
+# main
+
+[ $(id -u) -eq 0 ] || die "root privileges required"
+rc=0
+do_start || die "Cancelado por el usuario"
+TARBALL="$(select_file)"
+[ "$TARBALL" ] || die "No se ha seleccionado un fichero válido"
+TMPDIR="$(mktemp -d)"
+untar "$TARBALL" "$TMPDIR" || die "Error descomprimiendo el fichero"
+show_eula || die "Cancelado por el usuario"
+run_wrapper "$TMPDIR" || die "Error en la instalación"
+end_message
+exit 0
+

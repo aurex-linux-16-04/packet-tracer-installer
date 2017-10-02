@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec= gksu /usr/sbin/packet-tracer-installer-gui
+Icon=/usr/share/packet-tracer-installer/packet-tracer-installer.png
+Type=Application
+Terminal=false
+Name=Instalar Packet Tracer
+
