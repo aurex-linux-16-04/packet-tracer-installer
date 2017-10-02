@@ -82,8 +82,8 @@ TARBALL="$(select_file)"
 [ "$TARBALL" ] || die "No se ha seleccionado un fichero válido"
 TMPDIR="$(mktemp -d)"
 untar "$TARBALL" "$TMPDIR" || die "Error descomprimiendo el fichero"
-show_eula || die "Cancelado por el usuario"
-run_wrapper "$TMPDIR" || die "Error en la instalación"
+show_eula "$TMPDIR/eula.txt" || die "Cancelado por el usuario"
+run_wrapper "$TMPDIR/install" || die "Error en la instalación"
 end_message
 exit 0
 

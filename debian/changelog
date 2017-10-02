@@ -1,3 +1,9 @@
+packet-tracer-installer (7.0+aurex2) xenial; urgency=medium
+
+  * Fixed some paths
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 03 Oct 2017 01:14:16 +0200
+
 packet-tracer-installer (7.0+aurex1) xenial; urgency=medium
 
   *  Added installer wrapper
