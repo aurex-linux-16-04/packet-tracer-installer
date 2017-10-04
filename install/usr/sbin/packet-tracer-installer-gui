@@ -46,20 +46,7 @@ end_message(){
 untar(){
 	FILE="$1"
 	DIR="$2"
-	rc=0
-	NEW_DIR=""
 	tar -C "$DIR" -xzf "$FILE" || rc=$?
-	if [ $rc -eq 0 ] ; then
-		rc=0
-		for f in eula.txt install; do
-			F="$(find "$DIR" -name "$f" 2>/dev/null)"
-			[ "$F" ] || rc=1
-		done
-		if [ $rc -eq 0 ] ; then
-			NEW_DIR="$(dirname "$F")"
-		fi
-	fi
-	echo "$NEW_DIR" > /tmp/luis
 }
 
 get_newdir(){
@@ -101,6 +88,14 @@ run_wrapper(){
 	return $rc
 }
 
+fix_desktop(){
+	DFILE="$(rgrep -li "packet tracer" /usr/share/applications/ |grep -v "packet-tracer-installer.desktop")"
+	if [ "$DFILE" ] && [ -x /usr/local/bin/packettracer ] ; then
+		sed -i -e "/^Exec=/s%=.*$%=/usr/local/bin/packettracer%" "$DFILE" || true
+	fi
+		
+}
+
 # main
 
 [ $(id -u) -eq 0 ] || die "root privileges required"
@@ -115,6 +110,7 @@ NEW_DIR="$(get_newdir "$TMPDIR")"
 show_eula "$NEW_DIR/eula.txt" || die "Cancelado por el usuario"
 run_wrapper "$NEW_DIR/install" |progress "Instalando ..."
 [ $rc -eq 0 ] || die "Error en la instalación"
+fix_desktop
 end_message
 exit 0
 
