@@ -2,6 +2,7 @@
 
 case "$1" in
     configure)
+	aurex-transmute --module=packet-tracer transmute || true
 	# netadmins sudo
 	cp /usr/share/packet-tracer-installer/90_packet_tracer_installer /etc/sudoers.d/
         chmod 0440 /etc/sudoers.d/90_packet_tracer_installer

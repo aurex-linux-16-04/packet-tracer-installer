@@ -7,7 +7,7 @@ Standards-Version: 3.8.4
 
 Package: packet-tracer-installer
 Architecture: all
-Depends: ${misc:Depends}, libqt5multimedia5, libqt5script5, libqt5scripttools5, zenity, gksu, file
+Depends: ${misc:Depends}, libqt5multimedia5, libqt5script5, libqt5scripttools5, zenity, gksu, file, aurex-transmute
 Description: packet tracer installer helper
  This package installs dependencies to facilitate
  packet tracer installation

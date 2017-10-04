@@ -1,3 +1,9 @@
+packet-tracer-installer (7.0+aurex4) xenial; urgency=medium
+
+  * Minor fixes
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Wed, 04 Oct 2017 19:05:44 +0200
+
 packet-tracer-installer (7.0+aurex3) xenial; urgency=medium
 
   * Added gksu depends
