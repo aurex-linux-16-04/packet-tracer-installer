@@ -51,13 +51,27 @@ untar(){
 	tar -C "$DIR" -xzf "$FILE" || rc=$?
 	if [ $rc -eq 0 ] ; then
 		rc=0
-		for f in eula install; do
+		for f in eula.txt install; do
 			F="$(find "$DIR" -name "$f" 2>/dev/null)"
 			[ "$F" ] || rc=1
 		done
 		if [ $rc -eq 0 ] ; then
 			NEW_DIR="$(dirname "$F")"
 		fi
+	fi
+	echo "$NEW_DIR" > /tmp/luis
+}
+
+get_newdir(){
+	DIR="$1"
+	rc=0
+	NEW_DIR=""
+	for f in eula.txt install; do
+		F="$(find "$DIR" -name "$f" 2>/dev/null)"
+		[ "$F" ] || rc=1
+	done
+	if [ $rc -eq 0 ] ; then
+		NEW_DIR="$(dirname "$F")"
 	fi
 	echo "$NEW_DIR"
 }
@@ -95,7 +109,8 @@ do_start || die "Cancelado por el usuario"
 TARBALL="$(select_file)"
 [ "$TARBALL" ] || die "No se ha seleccionado un fichero válido"
 TMPDIR="$(mktemp -d)"
-NEW_DIR="$(untar "$TARBALL" "$TMPDIR")" |progress "Descomprimiendo ..."
+untar "$TARBALL" "$TMPDIR" |progress "Descomprimiendo ..."
+NEW_DIR="$(get_newdir "$TMPDIR")"
 [ "$NEW_DIR" ] || die "Error descomprimiendo el fichero"
 show_eula "$NEW_DIR/eula.txt" || die "Cancelado por el usuario"
 run_wrapper "$NEW_DIR/install" |progress "Instalando ..."
