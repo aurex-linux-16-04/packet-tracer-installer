@@ -1,3 +1,10 @@
+packet-tracer-installer (7.0+aurex6) xenial; urgency=medium
+
+  * Replaced gksu by sudo
+  * Fixed depends: libssl1.0.0, libqt5webkit5, libqt5xml5
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sat, 07 Oct 2017 12:50:32 +0200
+
 packet-tracer-installer (7.0+aurex5) xenial; urgency=medium
 
   * Fix "Exec=" in desktop file
