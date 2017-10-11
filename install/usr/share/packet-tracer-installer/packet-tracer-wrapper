@@ -39,7 +39,7 @@ read(){
 
 # main
 # preload (may be pressed ??) variables
-export cont="y" input="y" NEEDREPLACE="y" QSD="y" QC="y" IDIR="/opt/pt"
+export cont="y" input="y" NEEDREPLACE="y" QSD="y" QC="n" IDIR="/opt/pt"
 
 if [ "$1" ] && [ -x "$1" ] ; then
 	cd "$(dirname "$1")"

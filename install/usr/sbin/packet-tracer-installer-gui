@@ -89,6 +89,9 @@ run_wrapper(){
 }
 
 fix_desktop(){
+	LOCAL_TARGET="/usr/local/bin/packettracer"
+	rm -f "$LOCAL_TARGET"
+	cp -a /usr/share/packet-tracer-installer/packettracer "$LOCAL_TARGET"
 	DFILE="$(rgrep -li "packet tracer" /usr/share/applications/ |grep -v "packet-tracer-installer.desktop")"
 	if [ "$DFILE" ] && [ -x /usr/local/bin/packettracer ] ; then
 		sed -i -e "/^Exec=/s%=.*$%=/usr/local/bin/packettracer%" "$DFILE" || true

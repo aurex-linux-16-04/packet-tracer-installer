@@ -6,6 +6,11 @@ case "$1" in
 	# netadmins sudo
 	cp /usr/share/packet-tracer-installer/90_packet_tracer_installer /etc/sudoers.d/
         chmod 0440 /etc/sudoers.d/90_packet_tracer_installer
+	LOCAL_TARGET="/usr/local/bin/packettracer"
+	if [ -L "$LOCAL_TARGET" ] ; then
+		rm -f "$LOCAL_TARGET"
+		cp -a /usr/share/packet-tracer-installer/packettracer "$LOCAL_TARGET"
+	fi
 	;;
     abort-upgrade|abort-remove|abort-deconfigure)
     	;;

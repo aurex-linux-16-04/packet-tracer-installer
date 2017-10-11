@@ -21,7 +21,7 @@ case "$1" in
     remove|upgrade|deconfigure)
 	aurex-transmute --module=packet-tracer untransmute || true
 	rm -f /etc/sudoers.d/90_packet_tracer_installer
-
+	rm -f /usr/local/bin/packettracer
     ;;
 
     failed-upgrade)

@@ -1,0 +1,14 @@
+#!/bin/bash
+TARGET_RUN="/opt/pt/packettracer"
+[ -x "$TARGET_RUN" ] || exit 0
+export(){
+	while [ "$1" ] ; do
+		if [ "${1%=*}" != "LD_LIBRARY_PATH" ] ; then
+			builtin export "$1"
+		fi
+		shift
+	done
+}
+
+. $TARGET_RUN
+exit 0

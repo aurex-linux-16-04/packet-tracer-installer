@@ -1,3 +1,9 @@
+packet-tracer-installer (7.0+aurex7) xenial; urgency=medium
+
+  * Remove use of local libraries
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Thu, 12 Oct 2017 00:51:10 +0200
+
 packet-tracer-installer (7.0+aurex6) xenial; urgency=medium
 
   * Replaced gksu by sudo
